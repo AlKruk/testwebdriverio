@@ -1,0 +1,29 @@
+version: "3"
+services:
+  HubService:
+    image: selenium/hub:3.141.59-20210105
+    container_name: seleniumHub
+    ports:
+      - "4444:4444"
+
+  ChromeService:
+    image: selenium/node-chrome-debug
+    container_name: chromeNode
+    ports:
+      - "10001:10002"
+    environment:
+     - HUB_HOST=seleniumHub
+     - HUB_PORT=4444
+    depends_on:
+     - HubService
+
+  OperaService:
+    image: selenium/node-opera
+    container_name: operaNode
+    ports:
+      - "10003:10004"
+    environment:
+      - HUB_HOST=seleniumHub
+      - HUB_PORT=4444
+    depends_on:
+      - HubService
